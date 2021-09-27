@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 
 
 //note we now create our own view class that extends the built-in View class
@@ -50,14 +51,18 @@ class GameView : View {
         //Making a new paint object
         val paint = Paint()
         canvas.drawColor(Color.WHITE) //clear entire canvas to white color
+        //TODO loop through the list of goldcoins and draw them here
+        game.coins.map { c -> canvas.drawBitmap(c.cointBitmap, c.x.toFloat(), c.y.toFloat(), paint) }
 
         //draw the pacman
-        canvas.drawBitmap(game.pacBitmap, game.pacx.toFloat(),
-                game.pacy.toFloat(), paint)
+        canvas.drawBitmap(game.pacBitmap, game.pacx.toFloat(), game.pacy.toFloat(), paint)
 
-        //TODO loop through the list of goldcoins and draw them here
+        game.pointsView.text = "${context.resources.getString(R.string.points)} ${game.points}"
 
-
+        if(game.points == 10){
+           game.newGame();
+            Toast.makeText(context, "winner!", Toast.LENGTH_SHORT).show()
+        }
         game.doCollisionCheck()
         super.onDraw(canvas)
     }
