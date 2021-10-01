@@ -40,13 +40,14 @@ class GameView : View {
         w = width
         //update the size for the canvas to the game.
         game.setSize(h, w)
-        Log.d("GAMEVIEW", "h = $h, w = $w")
 
         //are the coins initiazlied?
         //if not initizlise them
         if (!(game.coinsInitialized))
             game.initializeGoldcoins()
 
+        game.levelView.text = "level: ${game.level}"
+        game.timer.text = "time: ${game.currentTime}"
 
         //Making a new paint object
         val paint = Paint()
@@ -59,8 +60,16 @@ class GameView : View {
 
         game.pointsView.text = "${context.resources.getString(R.string.points)} ${game.points}"
 
-        if(game.points == 10){
-           game.newGame();
+        if (game.lost) {
+            game.level = 1;
+            game.newGame()
+            Toast.makeText(context, "Loser!", Toast.LENGTH_SHORT).show()
+        }
+
+
+        if(game.won){
+            game.level += 1
+            game.newGame();
             Toast.makeText(context, "winner!", Toast.LENGTH_SHORT).show()
         }
         game.doCollisionCheck()

@@ -28,26 +28,34 @@ class MainActivity : AppCompatActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         Log.d("onCreate","Oncreate called")
 
-        game = Game(this,binding.pointsView)
+        game = Game(this,binding.pointsView, this.binding.timerView, this.binding.levelView)
 
         //intialize the game view clas and game class
         game.setGameView(binding.gameView)
         binding.gameView.setGame(game)
         game.newGame()
 
+        binding.pause.setOnClickListener {
+            game.paused = !game.paused;
+        }
+
         binding.moveRight.setOnClickListener {
+            game.paused = false;
             game.movepacman(10, 2)
 
         }
         binding.moveLeft.setOnClickListener {
+            game.paused = false;
             game.movepacman(10, 4)
 
         }
         binding.moveUp.setOnClickListener {
+            game.paused = false;
             game.movepacman(10, 1)
 
         }
         binding.moveDown.setOnClickListener {
+            game.paused = false;
             game.movepacman(10, 3)
 
         }

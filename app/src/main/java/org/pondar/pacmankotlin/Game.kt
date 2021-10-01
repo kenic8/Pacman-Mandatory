@@ -18,10 +18,18 @@ import kotlin.math.sqrt
  * This class should contain all your game logic
  */
 
-class Game(private var context: Context,view: TextView) {
+class Game(private var context: Context,view: TextView, timer: TextView, level: TextView) {
 
         public var pointsView: TextView = view
-        public var points : Int = 0
+        public var timer: TextView = timer
+        public var levelView: TextView = level
+        public var currentTime : Int = 10;
+        public var points : Int = 0;
+        public var level : Int = 1;
+
+        public var lost = false;
+        public var won = false;
+        public var paused = false;
         //bitmap of the pacman
         var pacBitmap: Bitmap
         var pacx: Int = 0
@@ -68,6 +76,9 @@ class Game(private var context: Context,view: TextView) {
 
 
     fun newGame() {
+        lost = false;
+        won = false;
+        paused = false;
         gameisStarted = false;
         pacx = 50
         pacy = 400 //just some starting coordinates - you can change this.
@@ -76,7 +87,9 @@ class Game(private var context: Context,view: TextView) {
         currentdir = 0
         points = 0
         pointsView.text = "${context.resources.getString(R.string.points)} $points"
+        currentTime = 60 - ((level-1)*10);
         gameView.invalidate() //redraw screen
+
     }
 
     fun setSize(h: Int, w: Int) {
@@ -137,6 +150,9 @@ class Game(private var context: Context,view: TextView) {
     }
 
     fun movepacman(pixels: Int, dir: Int) {
+        if (!gameisStarted) {
+            initTimer();
+        }
         gameisStarted = true;
         if (dir != currentdir) {
             canmove = true;
@@ -145,17 +161,36 @@ class Game(private var context: Context,view: TextView) {
         }
     }
 
+
+    fun initTimer() {
+        if (currentTime != 0 && points != 10) {
+            Timer().schedule(1000) {
+                if (!paused) {
+                    currentTime--
+                }
+                initTimer()
+            }
+        } else if (currentTime == 0){
+            lost = true;
+        } else if (points == 10){
+            won = true;
+        }
+        gameView.invalidate()
+    }
+
     fun animationLoop(pixels: Int, dir: Int) {
 
         Timer().schedule(20){
-            if (dir == 1) {
-                movePacmanUp(pixels)
-            } else if (dir == 2) {
-                movePacmanRight(pixels)
-            } else if (dir == 3) {
-                movePacmanDown(pixels)
-            } else if (dir == 4) {
-                movePacmanLeft(pixels)
+            if (!paused) {
+                if (dir == 1) {
+                    movePacmanUp(pixels)
+                } else if (dir == 2) {
+                    movePacmanRight(pixels)
+                } else if (dir == 3) {
+                    movePacmanDown(pixels)
+                } else if (dir == 4) {
+                    movePacmanLeft(pixels)
+                }
             }
             if (currentdir == dir && canmove && gameisStarted) {
                 animationLoop(pixels, dir)

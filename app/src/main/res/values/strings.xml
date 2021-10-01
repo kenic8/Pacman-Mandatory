@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">PacmanKotlin</string>
     <string name="points">Points:</string>
+    <string name="timer">time:</string>
+    <string name="level">level:</string>
+    <string name="pause">pause</string>
     <string name="move_right">Move Right</string>
     <string name="move_left">Move Left</string>
     <string name="move_up">Move Up</string>
