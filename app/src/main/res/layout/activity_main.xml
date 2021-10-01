@@ -44,6 +44,8 @@
         android:layout_height="wrap_content"
         android:text="@string/points" />
 
+
+
     <!-- Notice how the custom view is referenced here with
     a full package path-->
     <org.pondar.pacmankotlin.GameView

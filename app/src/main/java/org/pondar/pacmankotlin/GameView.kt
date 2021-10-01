@@ -44,8 +44,11 @@ class GameView : View {
 
         //are the coins initiazlied?
         //if not initizlise them
-        if (!(game.coinsInitialized))
+        if (!(game.coinsInitialized)) {
             game.initializeGoldcoins()
+            game.initEnemy()
+        }
+
 
 
         //Making a new paint object
@@ -54,6 +57,9 @@ class GameView : View {
         //TODO loop through the list of goldcoins and draw them here
         game.coins.map { c -> canvas.drawBitmap(c.cointBitmap, c.x.toFloat(), c.y.toFloat(), paint) }
 
+        //enemyes
+
+        game.enemys.map{e -> canvas.drawBitmap(e.EnemyBitmap, e.x.toFloat(),e.y.toFloat(),paint)}
         //draw the pacman
         canvas.drawBitmap(game.pacBitmap, game.pacx.toFloat(), game.pacy.toFloat(), paint)
 
