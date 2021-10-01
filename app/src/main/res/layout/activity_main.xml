@@ -102,6 +102,8 @@
 
     </LinearLayout>
 
+
+
     <!-- Notice how the custom view is referenced here with
     a full package path-->
     <org.pondar.pacmankotlin.GameView

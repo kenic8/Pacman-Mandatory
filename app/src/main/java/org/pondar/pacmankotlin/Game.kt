@@ -44,6 +44,9 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
         //the list of goldcoins - initially empty
         var coins = ArrayList<GoldCoin>()
 
+      //
+      var enemys = ArrayList<Enemy>()
+
 
         //a reference to the gameview
         private lateinit var gameView: GameView
@@ -51,11 +54,12 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
         private var w: Int = 0 //height and width of screen
 
 
+
+
     //The init code is called when we create a new Game class.
     //it's a good place to initialize our images.
     init {
         pacBitmap = BitmapFactory.decodeResource(context.resources, R.drawable.pacman)
-
     }
 
     fun setGameView(view: GameView) {
@@ -72,6 +76,21 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
             }
             coinsInitialized = true
 
+    }
+
+    fun initEnemy(){
+        //Enemy pics
+        var RedBitmap = BitmapFactory.decodeResource(context.resources, R.drawable.red)
+        var BlueBitmap = BitmapFactory.decodeResource(context.resources, R.drawable.bluey)
+        var OrangeBitmap = BitmapFactory.decodeResource(context.resources, R.drawable.orange)
+        var PinkBitmap = BitmapFactory.decodeResource(context.resources, R.drawable.pinky)
+
+        enemys =  ArrayList<Enemy>()
+
+        enemys.add(Enemy( h,w,RedBitmap))
+        enemys.add(Enemy(h,w,BlueBitmap))
+        enemys.add(Enemy(h,w,OrangeBitmap))
+        enemys.add(Enemy(h,w,PinkBitmap))
     }
 
 
