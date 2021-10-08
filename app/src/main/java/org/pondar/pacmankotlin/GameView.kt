@@ -72,7 +72,6 @@ class GameView : View {
             Toast.makeText(context, "Loser!", Toast.LENGTH_SHORT).show()
         }
 
-
         if(game.won){
             game.level += 1
             game.newGame();

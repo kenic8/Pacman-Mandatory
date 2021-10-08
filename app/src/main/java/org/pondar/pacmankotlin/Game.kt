@@ -87,10 +87,10 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
 
         enemys =  ArrayList<Enemy>()
 
-        enemys.add(Enemy( h,w,RedBitmap))
-        enemys.add(Enemy(h,w,BlueBitmap))
-        enemys.add(Enemy(h,w,OrangeBitmap))
-        enemys.add(Enemy(h,w,PinkBitmap))
+        enemys.add(Enemy( h,w,RedBitmap,pacy,pacx))
+        enemys.add(Enemy(h,w,BlueBitmap,pacy,pacx))
+        enemys.add(Enemy(h,w,OrangeBitmap,pacy,pacx))
+        enemys.add(Enemy(h,w,PinkBitmap,pacy,pacx))
     }
 
 
@@ -125,6 +125,7 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
             canmove = true;
             pacx = pacx + pixels
             doCollisionCheck()
+            doDeathCheck()
             gameView.invalidate()
         } else {
             canmove = false;
@@ -137,6 +138,7 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
             canmove = true;
             pacx = pacx - pixels
             doCollisionCheck()
+            doDeathCheck()
             gameView.invalidate()
         } else {
             canmove = false;
@@ -149,6 +151,7 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
             canmove = true;
             pacy = pacy - pixels
             doCollisionCheck()
+            doDeathCheck()
             gameView.invalidate()
         } else {
             canmove = false;
@@ -161,6 +164,7 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
             canmove = true;
             pacy = pacy + pixels
             doCollisionCheck()
+            doDeathCheck()
             gameView.invalidate()
         } else {
             canmove = false;
@@ -245,5 +249,28 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
 
     }
 
+    fun doDeathCheck() {
+        enemys.mapIndexed { i, c ->
+            var pacCenterX = pacx + pacBitmap.width / 2
+            var pacCenterY = pacy + pacBitmap.height / 2
+            var enemyCenterX = c.x + c.EnemyBitmap.width / 2
+            var enemyCenterY = c.y + c.EnemyBitmap.height / 2
+
+            var distance = sqrt(
+                pow(
+                    pacCenterX.toDouble() - enemyCenterX.toDouble(),
+                    2.toDouble()
+                ) + pow(
+                    pacCenterY.toDouble() - enemyCenterY.toDouble(),
+                    2.toDouble()
+                )
+            )
+            if (distance < 80) {
+                lost = true;
+                gameView.invalidate()
+            }
+
+        }
+    }
 
 }

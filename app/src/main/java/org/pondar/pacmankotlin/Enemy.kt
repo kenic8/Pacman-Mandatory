@@ -4,11 +4,11 @@ import android.graphics.Bitmap
 import android.util.Log
 import kotlin.random.Random
 
-class Enemy ( h: Int, w: Int, bitmap: Bitmap) {
+class Enemy ( h: Int, w: Int, bitmap: Bitmap, pacY:Int, pacX:Int) {
 
 
     var y: Int
-   var x: Int
+    var x: Int
 
 
     var EnemyBitmap: Bitmap = bitmap
@@ -16,10 +16,16 @@ class Enemy ( h: Int, w: Int, bitmap: Bitmap) {
 
 
     init {
+      y = pacY+100
+        x = pacX+100
+    }
 
-        Log.d("hej",h.toString())
-      y = Random.nextInt(0, h-200)
-       x = Random.nextInt(0, w-200)
+    init {
+        var yTry = Random.nextInt(0, h - 200)
+        var xTry = Random.nextInt(0, w - 200)
+        if (yTry != pacY && xTry != pacX)
+            y = yTry+80
+            x = xTry+80
     }
 
 
