@@ -60,6 +60,7 @@ class GameView : View {
 
         //enemyes
 
+
         game.enemys.map{e -> canvas.drawBitmap(e.EnemyBitmap, e.x.toFloat(),e.y.toFloat(),paint)}
         //draw the pacman
         canvas.drawBitmap(game.pacBitmap, game.pacx.toFloat(), game.pacy.toFloat(), paint)

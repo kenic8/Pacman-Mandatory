@@ -85,7 +85,7 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
         var OrangeBitmap = BitmapFactory.decodeResource(context.resources, R.drawable.orange)
         var PinkBitmap = BitmapFactory.decodeResource(context.resources, R.drawable.pinky)
 
-        enemys =  ArrayList<Enemy>()
+        enemys = ArrayList<Enemy>()
 
         enemys.add(Enemy( h,w,RedBitmap,pacy,pacx))
         enemys.add(Enemy(h,w,BlueBitmap,pacy,pacx))
@@ -93,6 +93,37 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
         enemys.add(Enemy(h,w,PinkBitmap,pacy,pacx))
     }
 
+    fun moveEnemies() {
+        Timer().schedule(100){
+            enemys.map { e ->
+                 if (e.xDir == 1){
+                     e.x += 1
+                 } else {
+                     e.x -= 1
+                 }
+                if ( e.x < 0 ){
+                    e.xDir = 1
+                } else if ( e.x+80 > w ){
+                    e.xDir = 0
+                }
+
+                if (e.yDir == 1){
+                    e.y += 1
+                } else {
+                    e.y -= 1
+                }
+                if ( e.y < 0 ){
+                    e.yDir = 1
+                } else if ( e.y+80 > h ){
+                    e.yDir = 0
+                }
+
+
+            }
+            moveEnemies()
+            gameView.invalidate()
+        }
+    }
 
     fun newGame() {
         lost = false;
@@ -181,6 +212,7 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
             canmove = true;
             currentdir = dir
             animationLoop(pixels, dir)
+            moveEnemies()
         }
     }
 
@@ -237,7 +269,6 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
 
             var distance = sqrt(pow(pacCenterX.toDouble()-cointCenterX.toDouble(), 2.toDouble())+pow(pacCenterY.toDouble()-cointCenterY.toDouble(), 2.toDouble()))
 
-            Log.d("dist", distance.toString())
             if (distance > 80) {
                 UpdatedCoins.add(c)
             } else {
