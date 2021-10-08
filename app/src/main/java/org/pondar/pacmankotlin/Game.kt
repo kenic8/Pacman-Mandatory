@@ -94,38 +94,41 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
     }
 
     fun moveEnemies() {
-        Timer().schedule(100){
-            enemys.map { e ->
-                 if (e.xDir == 1){
-                     e.x += 1
-                 } else {
-                     e.x -= 1
-                 }
-                if ( e.x < 0 ){
-                    e.xDir = 1
-                } else if ( e.x+80 > w ){
-                    e.xDir = 0
-                }
+        if ( gameisStarted) {
+            Timer().schedule(100) {
+                enemys.map { e ->
+                    if (e.xDir == 1) {
+                        e.x += 1
+                    } else {
+                        e.x -= 1
+                    }
+                    if (e.x < 0) {
+                        e.xDir = 1
+                    } else if (e.x + 80 > w) {
+                        e.xDir = 0
+                    }
 
-                if (e.yDir == 1){
-                    e.y += 1
-                } else {
-                    e.y -= 1
-                }
-                if ( e.y < 0 ){
-                    e.yDir = 1
-                } else if ( e.y+80 > h ){
-                    e.yDir = 0
-                }
+                    if (e.yDir == 1) {
+                        e.y += 1
+                    } else {
+                        e.y -= 1
+                    }
+                    if (e.y < 0) {
+                        e.yDir = 1
+                    } else if (e.y + 80 > h) {
+                        e.yDir = 0
+                    }
 
 
+                }
+                moveEnemies()
+                gameView.invalidate()
             }
-            moveEnemies()
-            gameView.invalidate()
         }
     }
 
     fun newGame() {
+        currentTime = 60 - ((level-1)*10);
         lost = false;
         won = false;
         paused = false;
@@ -137,7 +140,6 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
         currentdir = 0
         points = 0
         pointsView.text = "${context.resources.getString(R.string.points)} $points"
-        currentTime = 60 - ((level-1)*10);
         gameView.invalidate() //redraw screen
 
     }
@@ -208,6 +210,7 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
             initTimer();
         }
         gameisStarted = true;
+
         if (dir != currentdir) {
             canmove = true;
             currentdir = dir
@@ -218,6 +221,7 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
 
 
     fun initTimer() {
+        if (!gameisStarted){
         if (currentTime != 0 && points != 10) {
             Timer().schedule(1000) {
                 if (!paused) {
@@ -225,13 +229,16 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
                 }
                 initTimer()
             }
-        } else if (currentTime == 0){
+        } else if (currentTime == 0) {
             lost = true;
-        } else if (points == 10){
+        } else if (points == 10) {
             won = true;
         }
         gameView.invalidate()
     }
+    }
+
+
 
     fun animationLoop(pixels: Int, dir: Int) {
 
@@ -298,9 +305,10 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
             )
             if (distance < 80) {
                 lost = true;
+                gameisStarted = true;
                 gameView.invalidate()
             }
-
+            gameView.invalidate()
         }
     }
 
