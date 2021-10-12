@@ -96,6 +96,7 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
     fun moveEnemies() {
         if ( gameisStarted) {
             Timer().schedule(100) {
+                if (!paused) {
                 enemys.map { e ->
                     if (e.xDir == 1) {
                         e.x += 1
@@ -121,7 +122,9 @@ class Game(private var context: Context,view: TextView, timer: TextView, level: 
 
 
                 }
+                }
                 moveEnemies()
+
                 gameView.invalidate()
             }
         }
